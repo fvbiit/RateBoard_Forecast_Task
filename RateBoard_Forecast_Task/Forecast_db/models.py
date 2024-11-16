@@ -8,4 +8,4 @@ class Forecast(models.Model):
     values = models.JSONField()
 
     def __str__(self):
-        return f"{self.id} {self.company_id} {self.forecast_date} {self.values}"
+        return f"ID: {self.id}, Company_ID: {self.company_id}, Forecast Date: {self.forecast_date}, Values: {self.values}"
