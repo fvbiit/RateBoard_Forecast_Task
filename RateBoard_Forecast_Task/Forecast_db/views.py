@@ -7,8 +7,6 @@ from django.http import JsonResponse
 from .models import Forecast
 from datetime import datetime
 
-# Create your views here.
-
 def forecast_view(request):
 
     #fetches the query param defined in postman
@@ -16,7 +14,7 @@ def forecast_view(request):
     date_str = request.GET.get('date')
 
     forecasts = Forecast.objects.all() #Problem if there are many datasets (Performance)
-    datalist=[]
+    forcast_values_list=[]
 
     try:
         conv_comp_id = int(comp_id)
@@ -30,23 +28,23 @@ def forecast_view(request):
                 #Detects the latest forecast date and puts data in latest_forecast dict
                 if (conv_comp_id not in latest_forecast or dataset.forecast_date > latest_forecast[conv_comp_id].forecast_date):
                     latest_forecast[conv_comp_id] = dataset
-                    print (latest_forecast[conv_comp_id])
 
         #Saves the forecast values starting from the queried param date in a list.
         if latest_forecast:
             dataset = latest_forecast[conv_comp_id]
             date_offset = (conv_date - dataset.forecast_date).days
 
+            #Filters values based on the offset and extend it to the list
             for filtered_values in range(date_offset, len(dataset.values)):
                 data = dataset.values[filtered_values]
-                datalist.extend({data})
+                forcast_values_list.extend({data})
                 
         #If List is empty => no Forecast Values were found
-        if not datalist:
+        if not forcast_values_list:
             return JsonResponse({"Response":{"Values": "No Forecast Values found"}})
 
         #Returns the correct Forecast Values
-        return JsonResponse({"Response":{"Forecast Values": datalist}})
+        return JsonResponse({"Response":{"Forecast Values": forcast_values_list}})
 
     #Invalid Query Param Input
     except ValueError:
