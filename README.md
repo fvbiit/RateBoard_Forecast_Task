@@ -1,11 +1,14 @@
 # Forecast Project Protocoll
 
 ## About the Project
-This project is about the development of a backend with the Django framework. A database is to be created and filled with data. Furthermore, an API is to be developed that communicates with this database. The database contains: ‘company_id, “forecast_date” and a list of “values”. With the help of query parameters (‘date’ and ‘company_id’), which are passed in the endpoint, the forecast values are to be output in the form of values from the start of the queried parameter date. 
-The filter condition is: forecast_date <= queried parameter date and company_id == queried parameter company_id.
+This project involves developing a backend using the Django framework. A database will be created and populated with data. Additionally, an API will be built to interact with this database.
+
+The database will contain the following fields: id(Autoincrement), company_id, forecast_date, and a list of values. Using query parameters (date and company_id) passed in the API endpoint, the forecast values are returned from the specified start date and depending on the last forecast date.
+
+The filtering criteria are as follows: forecast_date <= the provided date parameter and company_id == company_id query parameter.
 
 ## Getting Started
-The main points of the Forecast App are described below, such as project creation and configurations, as well as the creation of the database using models and the Python logic for filtering the database contents.
+The main features of the Forecast App are outlined below, including project setup and configuration, database creation using Django models, and the Python API logic for filtering database content.
 
 ### Create Django Project 
 
@@ -79,7 +82,7 @@ The migrate command pushes the changes to the Database.
 ![grafik](https://github.com/user-attachments/assets/1c5ac264-5d08-4c9c-a287-e8bce04cfb6f)
 
 ### Python Forecast Logic
-The Forecast Logic is the heart of this Project. It filtered und outputs the correct forecast Values.
+The Forecast API Logic is the heart of this Project. It filtered and outputs the correct forecast Values.
 
 ```python
 def forecast_view(request):
@@ -126,7 +129,7 @@ def forecast_view(request):
         return JsonResponse({"Response":{"Forecast Values": "Your input was not valid"}})
 ```
 ### API with Postman
-The API created in the project is called using Postman. The endpoint is requested with a GET request and two transferred query parameters.
+The API developed in this project is tested using Postman. The endpoint is accessed via a GET request with two query parameters.
 
 #### Postman Request
 ![grafik](https://github.com/user-attachments/assets/b9d37160-97d9-4cee-9c47-b86b47b4ab40)
@@ -144,17 +147,18 @@ The logic contains 3 response options: ‘Forecast Values Found’, ‘No Foreca
 
 ### Maintainability
 
-Good maintainability is guaranteed with the Django framework because each function has its own section (file, folder), such as models, views, urls, etc. Furthermore, maintainability is guaranteed by sufficient commenting of the code and an easily readable code structure.
-The extension of code structures, such as the addition of new models, new functions in views.py or the addition of new endpoints is possible.
+The Django framework ensures good maintainability by organizing each component into dedicated sections, such as models, views, URLs, and more. Additionally, maintainability is supported through  code commenting and a readable code structure.
+
+The framework also allows for easy extensibility, making it straightforward to add new models, functions in views.py, or new endpoints as needed.
 
 ### Scalability
 
 Scalability describes when a programm is enlarged so that the performance stays the same, if possible.
-The current program would therefore have to be optimised if, for example, several data records are written to the database so that the performance remains as constant as possible.
+The current program would therefore have to be optimised if for example several data records are written to the database so that the performance remains as constant as possible.
 
 ### Performance
 
-Performance and Scalability are closly connected to each other. The performance is the main point of the Scalability. The goal for every programm is to optimize your code for a better performance.
+Performance and Scalability are closly connected to each other. The performance is the main point of the Scalability. The goal for every program is to optimize your code for a better performance.
 
 ## Problems with this Setup!
 
@@ -168,4 +172,8 @@ There would be room for improvement when loading the database object in the view
 ```python
 forecasts = Forecast.objects.all() #Problem if there are many datasets (Performance)
 ```
-It would be possible to filter the required data directly and not load it all into the logic.
+Instead of loading all records, it would be more efficient to filter the required data directly, avoiding unnecessary data retrieval.
+
+Another problem at the beginning was that the task was misunderstood and the entire data records were always output regardless of the query parameter date.
+The values should actually be outputed depending on the latest forecast date and the date query parameter.
+But despite some problems at the beginning, the task was accomplished.
